@@ -1,5 +1,5 @@
 /*
- * app.js - Simple express server
+ * app.js - Simple express server with logging
 */
 
 /*jslint          node: true,          continue: true,
@@ -21,6 +21,7 @@ var
 //---------------------------- END MODULE SCOPE VARIABLES ----------------------------
 
 //---------------------------- BEGIN SERVER CONFIGURATON ----------------------------
+app.use(express.logger())
 app.get('/', function(request, response) {
 	response.send('Hello Express');
 });

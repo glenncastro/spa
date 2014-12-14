@@ -1,5 +1,5 @@
 /*
- * app.js - Simple connect server
+ * app.js - Simple express server
 */
 
 /*jslint          node: true,          continue: true,
@@ -10,20 +10,26 @@
 */
 /*global */
 
+//---------------------------- BEGIN MODULE SCOPE VARIABLES ----------------------------
+'use strict';
 var
-	connectHello, server,
 	http = require('http'),
-	connect = require('connect'),
-	app = connect(),
-	bodyText = 'Hello Connect';
+	express = require('express'),
 
-connectHello = function(request, response, next) {
-	response.setHeader('content-length', bodyText.length);
-	response.end(bodyText);
-};
+	app = express(),
+	server = http.createServer(app);	
+//---------------------------- END MODULE SCOPE VARIABLES ----------------------------
 
-app.use(connectHello);
-server = http.createServer(app);
+//---------------------------- BEGIN SERVER CONFIGURATON ----------------------------
+app.get('/', function(request, response) {
+	response.send('Hello Express');
+});
+//---------------------------- END SERVER CONFIGURATON ----------------------------
 
+//---------------------------- BEGIN START SERVER ----------------------------
 server.listen(3000);
-console.log('Listening on port %d', server.address().port);
+console.log(
+	'Express server listening on port %d in %s mode',
+	server.address().port, app.settings.env
+);
+//---------------------------- END START SERVER ----------------------------

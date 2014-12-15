@@ -1,5 +1,5 @@
 /*
- * app.js - Express server with generic routing
+ * app.js - Express server with basic auth
 */
 
 /*jslint          node: true,          continue: true,
@@ -18,17 +18,17 @@ var
 	routes = require('./routes'),
 	app = express(),
 	server = http.createServer(app);
-
-routes();	
 //---------------------------- END MODULE SCOPE VARIABLES ----------------------------
 
 //---------------------------- BEGIN SERVER CONFIGURATON ----------------------------
 app.configure(function() {
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
+	app.use(express.basicAuth('user', 'spa'));
 	app.use(express.static(__dirname + '/public'));
 	app.use(app.router);
 });
+
 app.configure('development', function() {
 	app.use(express.logger());
 	app.use(express.errorHandler({
@@ -36,6 +36,7 @@ app.configure('development', function() {
 		showStack: true
 	}));
 });
+
 app.configure('production', function() {
 	app.use(express.errorHandler());
 });

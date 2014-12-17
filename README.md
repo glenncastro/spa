@@ -1,4 +1,4 @@
-Learning Single Page Web Applications
+Learning Single Page Web Applications <br>
 JavaScript end-to-end
 - JavaScript, jQuery
 - Node.js

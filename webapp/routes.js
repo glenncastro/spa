@@ -76,20 +76,34 @@ configRoutes = function(app, server) {
 	});
 
 	app.post('/:obj_type/create', function(request, response) {
-		dbHandle.collection(
-			request.params.obj_type,
-			function(outer_error, collection) {
-				var
-					options_map = { safe: true },
-					obj_map = request.body;
+		var
+			obj_type = request.params.obj_type,
+			obj_map = request.body;
 
-				collection.insert(
-					obj_map,
-					options_map,
-					function(inner_error, result_map) {
-						response.send(result_map);
-					}
-				);
+		checkSchema(
+			obj_type, obj_map,
+			function (error_list) {
+				if (error_list.length === 0) {
+					dbHandle.collection(
+						obj_type,
+						function(outer_error, collection) {
+							var options_map = { safe: true };
+
+							collection.insert(
+								obj_map,
+								options_map,
+								function(inner_error, result_map) {
+									response.send(result_map);
+								}
+							);
+						}
+					);
+				} else {
+					response.send({
+						error_msg: 'Input document not valid',
+						error_list: error_list
+					});
+				}
 			}
 		);
 	});
@@ -112,25 +126,39 @@ configRoutes = function(app, server) {
 	app.post('/:obj_type/update/:id', function(request, response) {
 		var
 			find_map = { _id: makeMongoId(request.params.id) },
-			obj_map = request.body;
-		dbHandle.collection(
-			request.params.obj_type,
-			function(outer_error, collection) {
-				var
-					sort_order = [],
-					options_map = {
-						'new': true, upsert: false, safe: true
-					};
+			obj_map = request.body,
+			obj_type = request.params.obj_type;
 
-				collection.findAndModify(
-					find_map,
-					sort_order,
-					obj_map,
-					options_map,
-					function(inner_error, updated_map) {
-						response.send(updated_map);
-					}
-				);
+		checkSchema(
+			obj_type, obj_map,
+			function(error_list) {
+				if (error_list.length === 0) {
+					dbHandle.collection(
+						obj_type,
+						function(outer_error, collection) {
+							var
+								sort_order = [],
+								options_map = {
+									'new': true, upsert: false, safe: true
+								};
+
+							collection.findAndModify(
+								find_map,
+								sort_order,
+								obj_map,
+								options_map,
+								function(inner_error, updated_map) {
+									response.send(updated_map);
+								}
+							);
+						}
+					);
+				} else {
+					response.send({
+						error_msg: 'Input document not valid',
+						error_list: error_list
+					});
+				}
 			}
 		);
 	});

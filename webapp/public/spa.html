@@ -37,7 +37,19 @@
 	<script src="js/spa.chat.js"></script>
 	<script src="js/spa.avtr.js"></script>
 	<script>
-		$(function() { spa.initModule($('#spa')); });
+		$(function() {
+			try {
+				spa.initModule($('#spa')); 
+			} catch (error) {
+				// log the error to the console
+				// then send it to a third party logging service
+			}
+			
+		});
+
+		window.onerror = function(error) {
+			// do something with asynchronous errors
+		};
 	</script>
 </head>
 <body>

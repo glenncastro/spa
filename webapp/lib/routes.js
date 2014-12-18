@@ -16,11 +16,36 @@ var
 	configRoutes,
 	crud = require('./crud'),
 	chat = require('./chat'),
-	makeMongoId = crud.makeMongoId;
+	makeMongoId = crud.makeMongoId,
+
+	agent_text = 'Enter the modern single page web application (SPA). '
+		+ 'With the near universal availability of capable browsers and '
+		+ 'powerful hardware, we can push most of the web application to '
+		+ 'the browser; including HTML rendering, data and business '
+		+ 'logic. The only time a client needs to communicate with the '
+		+ 'server is to authenticate or synchronize data. This means users '
+		+ 'get a fluid, comfortable experience whether they\'re surfing '
+		+ 'at their desk or using a phone app on a sketch 3G connection.'
+		+ '<br><br>'
+		+ '<a href="/index.html#page=home">Home</a><br>'
+		+ '<a href="/index.html#page=about">About</a><br>'
+		+ '<a href="/index.html#page=buynow">Buy Now!</a><br>'
+		+ '<a href="/index.html#page=contact us">Contact Us</a><br>';
+
 //---------------------------- END MODULE SCOPE VARIABLES ----------------------------
 
 //---------------------------- BEGIN PUBLIC METHODS ----------------------------
 configRoutes = function(app, server) {
+	app.all('*', function(req, res, next) {
+		if (req.headers['user-agent'] ===
+			'Googlebot/2.1 (+http://www.googlebot.com/bot.html)') {
+			res.contentType('html');
+			res.end(agent_text);
+		} else {
+			next();
+		}
+	});
+
 	app.get('/', function(request, response) {
 		response.redirect('/spa.html');
 	});

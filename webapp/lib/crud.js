@@ -117,7 +117,7 @@ readObj = function(obj_type, find_map, fields_map, callback) {
 			function(outer_error, collection) {
 				collection.find(find_map, fields_map).toArray(
 					function(inner_error, map_list) {
-						cache.setValue(find_map, map_list);
+						//cache.setValue(find_map, map_list);
 						callback(map_list);
 					}
 				);

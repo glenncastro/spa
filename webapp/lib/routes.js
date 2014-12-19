@@ -47,8 +47,8 @@ configRoutes = function(app, server) {
 	});
 
 	app.get('/', function(request, response) {
-		response.redirect('/spa.html');
 		response.header("Cache-Control", "max-age=28800");
+		response.redirect('/spa.html');
 	});
 
 	app.all('/:obj_type/*?', function(request, response, next) {

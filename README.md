@@ -5,3 +5,4 @@ JavaScript end-to-end
 - Web sockets and Socket.IO
 - MongoDB
 - SEO
+- Redis
